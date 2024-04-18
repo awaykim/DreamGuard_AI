@@ -4,7 +4,7 @@ import os
 import torch
 import numpy as np
 import pandas as pd
-from model_eval import predict_new_data  
+from model_predict import predict_new_data  
 from ResNetAndrewNg import ResNetAndrewNg
 
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def check_files_and_predict(record_name):
     if os.path.exists(dat_path) and os.path.exists(hea_path):
         prob, percentile = predict_new_data(data, CSV)
         print(prob, percentile)
-        return jsonify({'prob': prob, 'percentile': percentile}), 200
+        return jsonify({'record_id': record_name, 'prob': prob, 'percentile': percentile}), 200
     else:
         return jsonify({'error': '필요한 파일이 없습니다.'}), 400
 
