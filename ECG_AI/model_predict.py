@@ -58,7 +58,7 @@ def get_hr_from_rpeaks(rpeak_arr, hz, window, step):
 # 새로운 데이터에 대한 예측 확률을 반환하는 함수
 def predict_new_data(record_name, df):
 
-    start_comment = '수면 무호흡증 진단을 시작합니다 . . .'
+    start_comment = '== 수면 무호흡증 진단 시작 =='
     print(start_comment)
     start = datetime.now()
 
@@ -79,7 +79,7 @@ def predict_new_data(record_name, df):
     hr_arr = adjust_len(hr_arr, desire_len=256)
     print("- 데이터 전처리 완료")
     # 모델 추론
-    print("== 모델 추론 완료 ==")
+    print("== OSA 추론 완료 ==")
     hr_tensor = torch.from_numpy(np.array(hr_arr))
     hr_tensor = hr_tensor.unsqueeze(0).unsqueeze(0)
     prob = model_inference(model, hr_tensor)
@@ -97,10 +97,7 @@ if __name__ == "__main__":
     # test_data 
     df = pd.read_csv('data/percentile_dummy.csv')
     record_name = 'data/apnea-ecg-database-1.0.0/a01' 
-    start_comment = '수면 무호흡증 진단을 시작합니다 . . .'
-    print(start_comment)
-    start = datetime.now()
+    
+    
     prob, percentile = predict_new_data(record_name, df)
-    print(f"Predicted probability: {prob}")
-    print(f"Percentile(high): {percentile}")
-    print('Total Elapsed time:', datetime.now() - start)
+    
