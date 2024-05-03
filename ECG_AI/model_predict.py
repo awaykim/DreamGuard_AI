@@ -8,8 +8,6 @@ from datetime import datetime
 import time
 import threading
 
-
-# 시간 추적을 위한 함수
 def track_time(start_time, stop_event):
     while not stop_event.is_set():
         elapsed_time = time.time() - start_time
