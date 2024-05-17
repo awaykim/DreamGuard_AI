@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import zipfile
 import os
 import torch
@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from model_predict import predict_new_data  
 from ResNetAndrewNg import ResNetAndrewNg
+import time
 
 app = Flask(__name__)
 
@@ -32,9 +33,8 @@ def check_files_and_predict(record_name):
     else:
         return jsonify({'error': '필요한 파일이 없습니다.'}), 400
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-
+@app.route('/ecg_post', methods=['POST'])
+def upload_ecg_file():
     file = request.files['file']
 
     if 'file' not in request.files:
@@ -56,10 +56,41 @@ def upload_file():
         return check_files_and_predict(filename.rsplit('.', 1)[0]) 
     else:
         return jsonify({'error': '허용되지 않은 파일 형식입니다.'}), 400
-        
     
-   
+    
+@app.route('/sound_post', methods=['POST'])
+def upload_sound_file():
 
+    file = request.files['file']
+    filename = file.filename
 
+    if 'file' not in request.files:
+        return jsonify({'error': '파일이 요청에 포함되지 않았습니다.'}), 400
+    
+    if file.filename == '':
+        return jsonify({'error': '파일명이 없습니다.'}), 400
+    
+    time.sleep(11)  
+
+    return jsonify({'record_id': filename.rsplit('.', 1)[0], 'prob': 0.7526391419384874, 'percentile': 18.54}), 200
+
+@app.route('/ecg')
+def upload_ecg_form():
+    return render_template('ecg_upload.html')
+
+@app.route('/sound')
+def upload_sound_form():
+    return render_template('sound_upload.html')
+
+@app.route('/')
+def upload_index_form():
+    return render_template('index.html')
+
+# 로컬 테스트 용
+# if __name__ == '__main__':
+#     app.run(debug=True)
+
+# 배포용
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
