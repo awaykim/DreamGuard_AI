@@ -3,6 +3,7 @@ ECG_AI__pycache__
 model/__pycache__
 /__pycache__
 .vscode
+.vv
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,flask
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask
